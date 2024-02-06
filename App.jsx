@@ -9,6 +9,7 @@ export default function App() {
     const [dice, setDice] = React.useState(allNewDice())
     const [rolls, setRolls]= React.useState(0)
     const [timer, setTimer]= React.useState(0)
+    const [timerId, setTimerId] =  React.useState(setTime)
 
     const allHeld = dice.every(die => die.isHeld)
     const firstValue = dice[0].value
@@ -18,16 +19,12 @@ export default function App() {
 
 console.log(tenzies)
 
-    React.useEffect(()=>{
-        const elapsedTime = setInterval(()=>{setTimer(prevTime=> prevTime+1)},1000);
-        if(tenzies){
-        clearInterval(elapsedTime)
-        }
-        return ()=>{
-            clearInterval(elapsedTime)}
-    }, [tenzies])
     function setTime() {
         return setInterval(()=>{setTimer(prevTime=> prevTime+1)},1000)
+    }
+
+    if(tenzies){
+        clearInterval(timerId)
     }
 
     function generateNewDie() {
@@ -55,6 +52,7 @@ console.log(tenzies)
             }))
             setRolls(prevRolls => prevRolls= prevRolls+1)
         } else {
+            setTimerId(setTime)
             setRolls(0)
             setTimer(0)
             setDice(allNewDice())
