@@ -1,5 +1,6 @@
-import React from "react"
+import React, { useRef } from "react"
 import Die from "./Die"
+import Score from "./Score"
 import {nanoid} from "nanoid"
 import Confetti from "react-confetti"
 
@@ -7,7 +8,10 @@ export default function App() {
 
     const [dice, setDice] = React.useState(allNewDice())
     const [tenzies, setTenzies] = React.useState(false)
-    
+    const [rolls, setRolls]= React.useState(0)
+    const [timer, setTimer]= React.useState(0)
+
+
     React.useEffect(() => {
         const allHeld = dice.every(die => die.isHeld)
         const firstValue = dice[0].value
@@ -17,6 +21,16 @@ export default function App() {
         }
     }, [dice])
 
+console.log(tenzies)
+
+    React.useEffect(()=>{
+        console.group("i ran")
+        const elapsedTime = setInterval(()=>{setTimer(prevTime=> prevTime+1)},1000);
+        return ()=>{
+            console.log("clean up time")
+            clearInterval(elapsedTime)}
+    }, [tenzies])
+
     function generateNewDie() {
         return {
             value: Math.ceil(Math.random() * 6),
@@ -24,7 +38,7 @@ export default function App() {
             id: nanoid()
         }
     }
-    
+
     function allNewDice() {
         const newDice = []
         for (let i = 0; i < 10; i++) {
@@ -40,12 +54,15 @@ export default function App() {
                     die :
                     generateNewDie()
             }))
+            setRolls(prevRolls => prevRolls= prevRolls+1)
         } else {
-            setTenzies(false)
+            setRolls(0)
+            setTimer(0)
             setDice(allNewDice())
+            setTenzies(false)
         }
     }
-    
+
     function holdDice(id) {
         setDice(oldDice => oldDice.map(die => {
             return die.id === id ? 
@@ -69,6 +86,9 @@ export default function App() {
             <h1 className="title">Tenzies</h1>
             <p className="instructions">Roll until all dice are the same. 
             Click each die to freeze it at its current value between rolls.</p>
+            <Score rolls={rolls}
+                   timer={timer}         
+            />
             <div className="dice-container">
                 {diceElements}
             </div>
