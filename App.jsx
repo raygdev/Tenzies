@@ -24,10 +24,11 @@ export default function App() {
 console.log(tenzies)
 
     React.useEffect(()=>{
-        console.group("i ran")
         const elapsedTime = setInterval(()=>{setTimer(prevTime=> prevTime+1)},1000);
+        if(tenzies){
+        clearInterval(elapsedTime)
+        }
         return ()=>{
-            console.log("clean up time")
             clearInterval(elapsedTime)}
     }, [tenzies])
 
