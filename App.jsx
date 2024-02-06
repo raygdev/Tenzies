@@ -7,19 +7,14 @@ import Confetti from "react-confetti"
 export default function App() {
 
     const [dice, setDice] = React.useState(allNewDice())
-    const [tenzies, setTenzies] = React.useState(false)
     const [rolls, setRolls]= React.useState(0)
     const [timer, setTimer]= React.useState(0)
 
+    const allHeld = dice.every(die => die.isHeld)
+    const firstValue = dice[0].value
+    const allSameValue = dice.every(die => die.value === firstValue)
+    const tenzies = allHeld && allSameValue
 
-    React.useEffect(() => {
-        const allHeld = dice.every(die => die.isHeld)
-        const firstValue = dice[0].value
-        const allSameValue = dice.every(die => die.value === firstValue)
-        if (allHeld && allSameValue) {
-            setTenzies(true)
-        }
-    }, [dice])
 
 console.log(tenzies)
 
