@@ -26,6 +26,9 @@ console.log(tenzies)
         return ()=>{
             clearInterval(elapsedTime)}
     }, [tenzies])
+    function setTime() {
+        return setInterval(()=>{setTimer(prevTime=> prevTime+1)},1000)
+    }
 
     function generateNewDie() {
         return {
