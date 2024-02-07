@@ -56,7 +56,6 @@ console.log(tenzies)
             setRolls(0)
             setTimer(0)
             setDice(allNewDice())
-            setTenzies(false)
         }
     }
 
